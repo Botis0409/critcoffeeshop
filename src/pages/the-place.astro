@@ -1,0 +1,93 @@
+---
+import BookLayout from '../layouts/BookLayout.astro';
+import { getCollection, render } from 'astro:content';
+import menu from '../data/menu.json';
+import settings from '../data/settings.json';
+
+const chapters = await getCollection('chapters');
+const chapter = chapters.find((c) => c.data.order === 1);
+if (!chapter) throw new Error('Chapter 1 not found');
+
+const { Content } = await render(chapter);
+const photos = chapter.data.photos ?? [];
+const heroPhoto = photos[0];
+const galleryPhotos = photos.slice(1);
+---
+
+<BookLayout
+  title={chapter.data.title}
+  description={chapter.data.description}
+>
+  <article class="book-page page-transition-enter">
+    <header class="chapter-header">
+      <span class="chapter-number">Chapter One</span>
+      <h1>{chapter.data.title}</h1>
+    </header>
+
+    {settings.cash_banner && (
+      <div class="banner">{settings.banner_text}</div>
+    )}
+
+    {heroPhoto && (
+      <div class="hero-image">
+        <img
+          src={heroPhoto.src}
+          alt={heroPhoto.alt}
+          width="1200"
+          height="675"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    )}
+
+    <div class="drop-cap">
+      <Content />
+    </div>
+
+    <section class="menu-section" aria-label="Menu">
+      <h2>The Menu</h2>
+      {menu.categories.map((cat) => (
+        <div class="menu-category">
+          <h3 class="menu-category-name">{cat.name}</h3>
+          <ul class="menu-list">
+            {cat.items.map((item) => (
+              <li class="menu-item">
+                <span class="menu-item-name">
+                  {item.name}
+                  {item.veggie && <span class="menu-veggie" title="Veggie">(v)</span>}
+                </span>
+                {item.price && (
+                  <span class="menu-item-price">{item.price} RON</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    {galleryPhotos.length > 0 && (
+      <section class="gallery" aria-label="Photos of the place">
+        {galleryPhotos.map((photo) => (
+          <figure class="gallery-item">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              width="600"
+              height="450"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        ))}
+      </section>
+    )}
+
+    <nav class="book-nav" aria-label="Page navigation">
+      <a href="/">&larr; Cover</a>
+      <span class="nav-label">1 / 2</span>
+      <a href="/program">Hours &rarr;</a>
+    </nav>
+  </article>
+</BookLayout>

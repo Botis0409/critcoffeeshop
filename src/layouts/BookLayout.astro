@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description = 'An old barn full of books and good coffee. Crit, Transylvania.', ogImage = '/media/interior-chandelier.jpg' } = Astro.props;
+const siteTitle = 'critcoffeeshop';
+const fullTitle = title === 'Home' ? siteTitle : `${title} | ${siteTitle}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+
+    <!-- Favicon (simple text-based SVG) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#F4ECDB" />
+  </head>
+  <body>
+    <div class="book-wrapper">
+      <nav class="book-nav" aria-label="Book chapters">
+        <a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>
+          critcoffeeshop
+        </a>
+        <div style="display:flex; gap:0.25rem;">
+          <a href="/the-place" aria-current={Astro.url.pathname === '/the-place/' || Astro.url.pathname === '/the-place' ? 'page' : undefined}>
+            The Place
+          </a>
+          <a href="/program" aria-current={Astro.url.pathname === '/program/' || Astro.url.pathname === '/program' ? 'page' : undefined}>
+            Hours
+          </a>
+        </div>
+      </nav>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="page-number">
+        critcoffeeshop &middot; Crit, Transylvania
+      </footer>
+    </div>
+  </body>
+</html>

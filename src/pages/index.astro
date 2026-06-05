@@ -1,0 +1,26 @@
+---
+import BookLayout from '../layouts/BookLayout.astro';
+---
+
+<BookLayout title="Home" description="An old barn full of books and good coffee. Antiques, specialty coffee, and a warm welcome in Crit, Transylvania.">
+  <article class="book-page page-transition-enter">
+    <div class="cover">
+      <div class="hero-image">
+        <img
+          src="/media/interior-chandelier.jpg"
+          alt="Old barn interior with brass chandelier and warm light"
+          width="1200"
+          height="675"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+
+      <h1 class="cover-title">critcoffeeshop</h1>
+      <p class="cover-subtitle">coffee &amp; antiques</p>
+      <p class="cover-tagline">An old barn full of books and good coffee.<br />Crit, Transylvania.</p>
+
+      <a href="/the-place" class="cover-enter">Open the book &rarr;</a>
+    </div>
+  </article>
+</BookLayout>

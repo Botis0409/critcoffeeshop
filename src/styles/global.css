@@ -1,0 +1,480 @@
+/* Fonts — self-hosted via @fontsource */
+@import '@fontsource/fraunces/latin-400.css';
+@import '@fontsource/fraunces/latin-700.css';
+@import '@fontsource/fraunces/latin-400-italic.css';
+@import '@fontsource/eb-garamond/latin-400.css';
+@import '@fontsource/eb-garamond/latin-400-italic.css';
+@import '@fontsource/eb-garamond/latin-700.css';
+@import '@fontsource/caveat/latin-400.css';
+@import '@fontsource/caveat/latin-700.css';
+
+/* ── Design tokens ── */
+:root {
+  --color-paper: #F4ECDB;
+  --color-paper-light: #EFE7D7;
+  --color-brick: #B5503A;
+  --color-green: #2D5A4A;
+  --color-wood: #5A3E28;
+  --color-wood-light: #7A5E48;
+  --color-dive-brown: #3B2A24;
+  --color-dive-orange: #C8642E;
+  --color-text: #3B2A24;
+  --color-text-muted: #7A5E48;
+
+  --font-title: 'Fraunces', serif;
+  --font-body: 'EB Garamond', serif;
+  --font-hand: 'Caveat', cursive;
+
+  --page-max: 1100px;
+  --page-pad: 1.5rem;
+  --page-radius: 3px;
+}
+
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 18px;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: #E8DCC8;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+/* ── Typography ── */
+h1, h2, h3 {
+  font-family: var(--font-title);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-dive-brown);
+}
+
+h1 { font-size: 2.2rem; margin-bottom: 0.6em; }
+h2 { font-size: 1.5rem; margin-top: 1.8em; margin-bottom: 0.5em; color: var(--color-green); }
+h3 { font-size: 1.15rem; margin-top: 1.2em; margin-bottom: 0.4em; }
+
+p { margin-bottom: 1em; }
+
+em { font-style: italic; }
+strong { font-weight: 700; }
+
+a {
+  color: var(--color-brick);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--color-dive-orange);
+}
+
+ul, ol {
+  padding-left: 1.2em;
+  margin-bottom: 1em;
+}
+
+li {
+  margin-bottom: 0.3em;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(90, 62, 40, 0.15);
+  margin: 2em 0;
+}
+
+/* ── Drop cap ── */
+.drop-cap::first-letter {
+  font-family: var(--font-title);
+  font-size: 3.6em;
+  float: left;
+  line-height: 0.8;
+  margin-right: 0.08em;
+  margin-top: 0.05em;
+  color: var(--color-brick);
+}
+
+/* ── Page (book) styling ── */
+.book-wrapper {
+  max-width: calc(var(--page-max) + 4rem);
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-page {
+  background: var(--color-paper);
+  position: relative;
+  padding: 2.5rem var(--page-pad) 3rem;
+  flex: 1;
+  border: 1px solid rgba(90, 62, 40, 0.1);
+  border-radius: var(--page-radius);
+  box-shadow:
+    0 1px 3px rgba(59, 42, 36, 0.06),
+    2px 4px 12px rgba(59, 42, 36, 0.08),
+    inset -2px 0 8px rgba(59, 42, 36, 0.03);
+}
+
+/* Paper grain overlay */
+.book-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--page-radius);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.book-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Spine shadow on left edge for desktop spread */
+@media (min-width: 800px) {
+  .book-page {
+    padding: 3rem 3.5rem 3rem;
+  }
+}
+
+/* ── Page number ── */
+.page-number {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(90, 62, 40, 0.08);
+  letter-spacing: 0.08em;
+}
+
+/* ── Navigation ── */
+.book-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  gap: 0.5rem;
+}
+
+.book-nav a,
+.book-nav span {
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  color: var(--color-wood);
+  text-decoration: none;
+  padding: 0.4em 0.8em;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.book-nav a:hover {
+  background: rgba(45, 90, 74, 0.08);
+  color: var(--color-green);
+}
+
+.book-nav .nav-label {
+  font-family: var(--font-hand);
+  font-size: 1rem;
+  color: var(--color-text-muted);
+}
+
+/* Active page in nav */
+.book-nav a[aria-current="page"] {
+  color: var(--color-green);
+  font-weight: 700;
+}
+
+/* ── Banner (cash only etc.) ── */
+.banner {
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 0.5em 1em;
+  color: var(--color-wood);
+  background: rgba(200, 100, 46, 0.07);
+  border-radius: var(--page-radius);
+  margin-bottom: 1rem;
+}
+
+/* ── Gallery ── */
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+@media (min-width: 550px) {
+  .gallery {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.gallery-item {
+  overflow: hidden;
+  border-radius: var(--page-radius);
+  border: 1px solid rgba(90, 62, 40, 0.1);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+  transition: transform 0.4s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-item img:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* Hero image */
+.hero-image {
+  width: 100%;
+  border-radius: var(--page-radius);
+  border: 1px solid rgba(90, 62, 40, 0.1);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+}
+
+/* ── Menu section ── */
+.menu-section {
+  margin: 2rem 0;
+}
+
+.menu-category {
+  margin-bottom: 1.5rem;
+}
+
+.menu-category-name {
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-wood);
+  margin-bottom: 0.5em;
+}
+
+.menu-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.3em 0;
+  border-bottom: 1px dotted rgba(90, 62, 40, 0.12);
+  gap: 0.5rem;
+}
+
+.menu-item-name {
+  font-family: var(--font-body);
+}
+
+.menu-veggie {
+  font-size: 0.85em;
+  color: var(--color-green);
+  margin-left: 0.3em;
+}
+
+.menu-item-price {
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  color: var(--color-wood);
+  white-space: nowrap;
+}
+
+/* ── Hours section ── */
+.hours-schedule {
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-dive-brown);
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.hours-note {
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* ── Cover page ── */
+.cover {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70dvh;
+  gap: 1.5rem;
+}
+
+.cover-title {
+  font-family: var(--font-title);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  color: var(--color-dive-brown);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.cover-subtitle {
+  font-family: var(--font-hand);
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: var(--color-wood);
+  max-width: 28ch;
+}
+
+.cover-tagline {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+}
+
+.cover-enter {
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  color: var(--color-green);
+  text-decoration: none;
+  padding: 0.6em 1.5em;
+  border: 1.5px solid var(--color-green);
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+  margin-top: 1rem;
+}
+
+.cover-enter:hover {
+  background: var(--color-green);
+  color: var(--color-paper);
+}
+
+/* ── Chapter title ornament ── */
+.chapter-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(90, 62, 40, 0.1);
+}
+
+.chapter-number {
+  font-family: var(--font-hand);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  display: block;
+  margin-bottom: 0.3em;
+}
+
+/* ── Desktop spread ── */
+@media (min-width: 800px) {
+  .spread {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .spread .book-page:first-child {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow:
+      0 1px 3px rgba(59, 42, 36, 0.06),
+      -2px 4px 12px rgba(59, 42, 36, 0.08),
+      inset -3px 0 10px rgba(59, 42, 36, 0.04);
+  }
+
+  .spread .book-page:last-child {
+    border-left: 1px solid rgba(90, 62, 40, 0.06);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow:
+      0 1px 3px rgba(59, 42, 36, 0.06),
+      2px 4px 12px rgba(59, 42, 36, 0.08),
+      inset 3px 0 10px rgba(59, 42, 36, 0.04);
+  }
+}
+
+/* ── Page flip transition ── */
+@media (prefers-reduced-motion: no-preference) {
+  .page-transition-enter {
+    animation: pageIn 0.4s ease-out;
+  }
+
+  @keyframes pageIn {
+    from {
+      opacity: 0;
+      transform: translateX(8px) rotateY(-2deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) rotateY(0);
+    }
+  }
+}
+
+/* ── Visually hidden (a11y) ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Focus styles ── */
+:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 2px;
+}

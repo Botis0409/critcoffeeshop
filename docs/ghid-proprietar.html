@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghid critcoffeeshop — Cum editez site-ul</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 2cm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      color: #3B2A24;
+      background: #fff;
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 14px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.3em;
+      color: #2D5A4A;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-top: 1.8em;
+      margin-bottom: 0.5em;
+      color: #2D5A4A;
+      border-bottom: 2px solid #2D5A4A;
+      padding-bottom: 0.2em;
+    }
+
+    h3 {
+      font-size: 1rem;
+      margin-top: 1.2em;
+      margin-bottom: 0.4em;
+      color: #5A3E28;
+    }
+
+    p, li {
+      margin-bottom: 0.5em;
+    }
+
+    ol {
+      padding-left: 1.5em;
+    }
+
+    ol li {
+      margin-bottom: 0.8em;
+    }
+
+    .subtitle {
+      color: #7A5E48;
+      font-size: 1rem;
+      margin-bottom: 2em;
+    }
+
+    .important-box {
+      background: #FFF8E7;
+      border: 2px solid #C8642E;
+      border-radius: 8px;
+      padding: 1em 1.2em;
+      margin: 1.5em 0;
+      font-size: 1.05em;
+    }
+
+    .important-box strong {
+      color: #C8642E;
+    }
+
+    .screenshot-placeholder {
+      background: #F4ECDB;
+      border: 2px dashed #B5503A;
+      border-radius: 8px;
+      padding: 2em 1em;
+      text-align: center;
+      color: #7A5E48;
+      margin: 0.8em 0;
+      font-style: italic;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-detail {
+      background: #f9f6f0;
+      border-left: 3px solid #2D5A4A;
+      padding: 0.6em 1em;
+      margin: 0.5em 0;
+      font-size: 0.95em;
+    }
+
+    code {
+      background: #F4ECDB;
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+      font-size: 0.95em;
+    }
+
+    .note {
+      color: #7A5E48;
+      font-size: 0.9em;
+      font-style: italic;
+    }
+
+    .footer-note {
+      margin-top: 3em;
+      padding-top: 1em;
+      border-top: 1px solid #ddd;
+      color: #7A5E48;
+      font-size: 0.85em;
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        font-size: 12px;
+      }
+
+      .screenshot-placeholder {
+        min-height: 80px;
+        page-break-inside: avoid;
+      }
+
+      h2 {
+        page-break-after: avoid;
+      }
+
+      .important-box {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cum editez site-ul critcoffeeshop</h1>
+  <p class="subtitle">Ghid simplu, pas cu pas. Tipareste-l si tine-l langa casa.</p>
+
+  <div class="important-box">
+    <strong>Dupa ce salvezi, schimbarea apare pe site in aproximativ un minut.</strong><br>
+    E normal sa nu fie instant — nu intra in panica, nu apasa de mai multe ori. Salveaza o data, asteapta un minut, reincarca pagina site-ului.
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2>1. Cum ma loghez</h2>
+
+  <ol>
+    <li>Deschide in browser (pe telefon sau calculator): <code>critcoffeeshop.com/admin</code></li>
+    <li>Apasa butonul <strong>„Login with GitHub"</strong>.</li>
+    <li>Daca esti deja logata pe GitHub, intri direct. Daca nu, scrie emailul si parola de GitHub si apasa „Sign in".</li>
+    <li>Prima data, GitHub te intreaba daca permiti accesul — apasa <strong>„Authorize"</strong>. Se intampla o singura data.</li>
+  </ol>
+
+  <div class="screenshot-placeholder">
+    [ Captура de ecran: pagina /admin cu butonul „Login with GitHub" ]
+  </div>
+
+  <p class="note">Dupa ce te-ai logat, vezi un panou cu „Chapters", „Settings" in stanga. De aici editezi totul.</p>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2>2. Cum schimb sau adaug o poza</h2>
+
+  <ol>
+    <li>In panoul din stanga, apasa pe <strong>„Chapters"</strong>, apoi pe capitolul unde vrei sa adaugi poza (ex: „The Place").</li>
+    <li>Gaseste sectiunea <strong>„Photos"</strong> si apasa <strong>„Add"</strong> (sau „+").</li>
+    <li><strong>Trage poza</strong> din telefon/calculator direct in casuta de upload. Orice poza de pe telefon e ok — site-ul o redimensioneaza singur.</li>
+    <li>Completeaza campul <strong>„Alt Text"</strong> — o descriere scurta a pozei, in engleza (ex: „Coffee bar with flowers"). E important pentru persoanele cu dizabilitati.</li>
+    <li>Apasa <strong>„Save"</strong> (butonul mare, sus).</li>
+  </ol>
+
+  <div class="screenshot-placeholder">
+    [ Captura de ecran: sectiunea Photos cu butonul Add si campul Alt Text ]
+  </div>
+
+  <div class="step-detail">
+    Ca sa <strong>stergi</strong> o poza: apasa pe ea, apoi pe „Remove" sau pe iconita de cos. Salveaza.
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2>3. Cum schimb un text sau o descriere</h2>
+
+  <ol>
+    <li>In panoul din stanga, apasa pe <strong>„Chapters"</strong>, apoi pe capitolul pe care vrei sa-l editezi.</li>
+    <li>Gaseste campul <strong>„Body"</strong> — acolo e textul principal al paginii.</li>
+    <li>Editeaza textul direct. Poti folosi bold (<strong>gras</strong>) si italic (<em>cursiv</em>) din bara de sus.</li>
+    <li>Campul <strong>„Short Description"</strong> de sus e textul mic care apare in cautarile Google.</li>
+    <li>Cand ai terminat, apasa <strong>„Save"</strong>.</li>
+  </ol>
+
+  <div class="screenshot-placeholder">
+    [ Captura de ecran: editorul de text Body cu bara de formatare ]
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2>4. Cum schimb un pret in meniu</h2>
+
+  <ol>
+    <li>In panoul din stanga, apasa pe <strong>„Settings"</strong> → <strong>„Menu"</strong>.</li>
+    <li>Gaseste categoria (ex: „Specialty Coffee") si itemul pe care vrei sa-l schimbi.</li>
+    <li>Editeaza campul <strong>„Price (RON)"</strong> — scrie doar numarul, fara „RON" (se adauga automat pe site).</li>
+    <li>Ca sa <strong>adaugi un item nou</strong>: apasa „+" la categoria potrivita, completeaza numele si pretul.</li>
+    <li>Ca sa <strong>stergi un item</strong>: apasa pe iconita de stergere de langa el.</li>
+    <li>Apasa <strong>„Save"</strong>.</li>
+  </ol>
+
+  <div class="screenshot-placeholder">
+    [ Captura de ecran: editarea meniului — campuri Name si Price ]
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2>5. Cum schimb programul</h2>
+
+  <ol>
+    <li>In panoul din stanga, apasa pe <strong>„Settings"</strong> → <strong>„Opening Hours"</strong>.</li>
+    <li>Campul <strong>„Schedule"</strong> e programul propriu-zis (ex: „Mon-Sun · 10:00-18:00"). Scrie-l cum vrei sa apara pe site.</li>
+    <li>Campul <strong>„Season Note"</strong> e nota calda de sub program (ex: „Open most days in season...").</li>
+    <li>Completeaza <strong>„Phone"</strong> si <strong>„Email"</strong> daca vrei sa apara pe site. Lasa gol daca nu.</li>
+    <li>Apasa <strong>„Save"</strong>.</li>
+  </ol>
+
+  <div class="screenshot-placeholder">
+    [ Captura de ecran: editarea programului — campurile Schedule si Season Note ]
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2>6. Cum pornesc sau opresc bannerul „cash only"</h2>
+
+  <ol>
+    <li>In panoul din stanga, apasa pe <strong>„Settings"</strong> → <strong>„Site Settings"</strong>.</li>
+    <li>Gaseste comutatorul <strong>„Show Cash Only Banner"</strong>.</li>
+    <li><strong>Pornit</strong> = bannerul apare pe site. <strong>Oprit</strong> = bannerul dispare.</li>
+    <li>Poti schimba si textul bannerului in campul <strong>„Banner Text"</strong>.</li>
+    <li>Apasa <strong>„Save"</strong>.</li>
+  </ol>
+
+  <div class="screenshot-placeholder">
+    [ Captura de ecran: comutatorul de banner si campul Banner Text ]
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+
+  <div class="important-box">
+    <strong>Retine:</strong> Dupa fiecare „Save", site-ul se reconstruieste singur. Schimbarea apare in ~1 minut. Nu trebuie sa faci nimic altceva. Daca ceva nu merge, inchide tab-ul, redeschide <code>critcoffeeshop.com/admin</code>, si incearca din nou.
+  </div>
+
+  <p class="footer-note">
+    Ghid pentru site-ul critcoffeeshop — Crit, Transylvania.<br>
+    Daca ai nevoie de ajutor tehnic, contacteaza persoana care ti-a configurat site-ul.
+  </p>
+
+</body>
+</html>

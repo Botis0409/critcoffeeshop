@@ -1,0 +1,47 @@
+---
+import BookLayout from '../layouts/BookLayout.astro';
+import { getCollection, render } from 'astro:content';
+import hours from '../data/hours.json';
+
+const chapters = await getCollection('chapters');
+const chapter = chapters.find((c) => c.data.order === 2);
+if (!chapter) throw new Error('Chapter 2 not found');
+
+const { Content } = await render(chapter);
+---
+
+<BookLayout
+  title={chapter.data.title}
+  description={chapter.data.description}
+>
+  <article class="book-page page-transition-enter">
+    <header class="chapter-header">
+      <span class="chapter-number">Chapter Two</span>
+      <h1>{chapter.data.title}</h1>
+    </header>
+
+    <section class="hours-section" aria-label="Opening hours">
+      <h2>When We're Open</h2>
+      <p class="hours-schedule">{hours.schedule}</p>
+      {hours.season_note && <p class="hours-note"><em>{hours.season_note}</em></p>}
+    </section>
+
+    <div class="drop-cap">
+      <Content />
+    </div>
+
+    <section class="contact-section" aria-label="Contact">
+      <h2>Find Us</h2>
+      <p>Crit (Deutschkreuz), Brasov County, Transylvania, Romania.</p>
+      {hours.phone && <p><strong>Phone:</strong> {hours.phone}</p>}
+      {hours.email && <p><strong>Email:</strong> {hours.email}</p>}
+      {!hours.phone && !hours.email && <p><em>Contact details coming soon.</em></p>}
+    </section>
+
+    <nav class="book-nav" aria-label="Page navigation">
+      <a href="/the-place">&larr; The Place</a>
+      <span class="nav-label">2 / 2</span>
+      <span></span>
+    </nav>
+  </article>
+</BookLayout>

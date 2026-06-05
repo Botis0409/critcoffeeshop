@@ -1,0 +1,68 @@
+backend:
+  name: github
+  repo: Botis0409/critcoffeeshop
+  branch: main
+  base_url: https://sveltia-cms-auth.YOURSUBDOMAIN.workers.dev   # [placeholder — replace with your Cloudflare Worker URL]
+
+media_folder: public/media
+public_folder: /media
+
+collections:
+  - name: chapters
+    label: Chapters
+    label_singular: Chapter
+    folder: src/content/chapters
+    create: true
+    extension: md
+    slug: "{{fields.order}}-{{fields.slug}}"
+    sortable_fields: [order]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Order, name: order, widget: number, value_type: int }
+      - { label: URL Slug, name: slug, widget: string, required: false }
+      - { label: Short Description, name: description, widget: text, required: false }
+      - label: Photos
+        name: photos
+        widget: list
+        required: false
+        fields:
+          - { label: Image, name: src, widget: image }
+          - { label: Alt Text, name: alt, widget: string }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: settings
+    label: Settings
+    files:
+      - label: Opening Hours
+        name: hours
+        file: src/data/hours.json
+        fields:
+          - { label: Schedule, name: schedule, widget: string, default: "Mon-Sun · 10:00-18:00" }
+          - { label: Season Note, name: season_note, widget: text, required: false }
+          - { label: Phone, name: phone, widget: string, required: false }
+          - { label: Email, name: email, widget: string, required: false }
+
+      - label: Menu
+        name: menu
+        file: src/data/menu.json
+        fields:
+          - label: Categories
+            name: categories
+            widget: list
+            fields:
+              - { label: Category Name, name: name, widget: string }
+              - label: Items
+                name: items
+                widget: list
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Price (RON), name: price, widget: string, required: false }
+                  - { label: Note, name: note, widget: string, required: false }
+                  - { label: Veggie, name: veggie, widget: boolean, default: false, required: false }
+
+      - label: Site Settings
+        name: site_settings
+        file: src/data/settings.json
+        fields:
+          - { label: "Show 'Cash Only' Banner", name: cash_banner, widget: boolean, default: true }
+          - { label: Banner Text, name: banner_text, widget: string, default: "Cash today, please — the card machine has its moods." }
