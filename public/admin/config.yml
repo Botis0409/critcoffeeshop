@@ -2,7 +2,7 @@ backend:
   name: github
   repo: Botis0409/critcoffeeshop
   branch: main
-  base_url: https://sveltia-cms-auth.YOURSUBDOMAIN.workers.dev   # [placeholder — replace with your Cloudflare Worker URL]
+  base_url: https://sveltia-cms-auth.sana-nicolau.workers.dev
 
 media_folder: public/media
 public_folder: /media

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghid mentenanta — critcoffeeshop</title>
+  <style>
+    @page { size: A4; margin: 2cm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      color: #2c2c2c; background: #fff; line-height: 1.6;
+      padding: 2rem; max-width: 860px; margin: 0 auto; font-size: 14px;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 0.2em; color: #2D5A4A; }
+    h2 { font-size: 1.25rem; margin-top: 2em; margin-bottom: 0.5em; color: #2D5A4A; border-bottom: 2px solid #2D5A4A; padding-bottom: 0.2em; }
+    h3 { font-size: 1.05rem; margin-top: 1.3em; margin-bottom: 0.3em; color: #5A3E28; }
+    p, li { margin-bottom: 0.5em; }
+    ol, ul { padding-left: 1.5em; }
+    ol li, ul li { margin-bottom: 0.6em; }
+    code { background: #f0ece4; padding: 0.15em 0.4em; border-radius: 3px; font-size: 0.92em; }
+    pre { background: #f7f4ef; border: 1px solid #e0d9ce; border-radius: 6px; padding: 1em; overflow-x: auto; font-size: 0.88em; margin: 0.8em 0; line-height: 1.5; }
+    pre code { background: none; padding: 0; }
+    .subtitle { color: #7A5E48; font-size: 1rem; margin-bottom: 2em; }
+    .warn { background: #FFF8E7; border: 2px solid #C8642E; border-radius: 8px; padding: 0.8em 1em; margin: 1em 0; }
+    .warn strong { color: #C8642E; }
+    .info { background: #f0f7f4; border: 2px solid #2D5A4A; border-radius: 8px; padding: 0.8em 1em; margin: 1em 0; }
+    .info strong { color: #2D5A4A; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8em 0; font-size: 0.92em; }
+    th, td { border: 1px solid #ddd; padding: 0.5em 0.8em; text-align: left; }
+    th { background: #f0ece4; font-weight: 600; }
+    .footer { margin-top: 3em; padding-top: 1em; border-top: 1px solid #ddd; color: #999; font-size: 0.8em; text-align: center; }
+    @media print { body { padding: 0; font-size: 11px; } h2 { page-break-after: avoid; } pre, .warn, .info { page-break-inside: avoid; } }
+  </style>
+</head>
+<body>
+
+<h1>Ghid mentenanta — critcoffeeshop</h1>
+<p class="subtitle">Tot ce trebuie sa stii ca sa intretii site-ul. Tipareste si pastreaza.</p>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>1. Arhitectura — ce e unde</h2>
+
+<table>
+  <tr><th>Ce</th><th>Unde</th><th>Acces</th></tr>
+  <tr><td>Codul sursa</td><td><a href="https://github.com/Botis0409/critcoffeeshop">github.com/Botis0409/critcoffeeshop</a></td><td>Cont GitHub: Botis0409</td></tr>
+  <tr><td>Hosting + CDN</td><td>Cloudflare Pages (contul proprietarei)</td><td>Cloudflare dashboard</td></tr>
+  <tr><td>Domeniu</td><td>critcoffeeshop.com (Namecheap, DNS pe Cloudflare)</td><td>Namecheap + Cloudflare DNS</td></tr>
+  <tr><td>CMS (editare continut)</td><td>critcoffeeshop.com/admin (Sveltia CMS)</td><td>Login cu GitHub</td></tr>
+  <tr><td>OAuth proxy (pt CMS login)</td><td>Cloudflare Worker: sveltia-cms-auth</td><td>Cloudflare dashboard → Workers</td></tr>
+</table>
+
+<h3>Structura fisierelor importante</h3>
+<pre><code>src/
+  content/chapters/     ← Textele paginilor (Markdown, editabile din CMS)
+    01-the-place.md     ← Capitol 1: The Place (proza + poze)
+    02-program.md       ← Capitol 2: Opening Hours (proza)
+  data/
+    menu.json           ← Meniu cu preturi (SINGURA sursa)
+    hours.json          ← Program + contact (SINGURA sursa)
+    settings.json       ← Banner cash only on/off (SINGURA sursa)
+  pages/                ← Paginile Astro (template-uri)
+  layouts/              ← Layout-ul "carte veche"
+  styles/global.css     ← Tot stilul site-ului
+public/
+  admin/config.yml      ← Configurarea CMS-ului
+  media/                ← Pozele (uploadate din CMS)</code></pre>
+
+<div class="info">
+  <strong>Regula de aur:</strong> Fiecare informatie editabila (pret, ora, banner) exista intr-un SINGUR fisier JSON. Paginile Astro importa din JSON. CMS-ul editeaza acelasi JSON. Zero duplicare.
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>2. Cum functioneaza deploy-ul</h2>
+
+<ol>
+  <li>Proprietara (sau tu) editeaza ceva — fie din CMS (/admin), fie cu git push.</li>
+  <li>CMS-ul face automat un <strong>commit in GitHub</strong>.</li>
+  <li>Cloudflare Pages detecteaza commit-ul si <strong>rebuild-uieste site-ul</strong> (30-60 secunde).</li>
+  <li>Noul site e live automat pe critcoffeeshop.com.</li>
+</ol>
+
+<p><strong>Build command:</strong> <code>npm run build</code><br>
+<strong>Output dir:</strong> <code>dist</code><br>
+<strong>Node version:</strong> 22 (setat ca env var <code>NODE_VERSION=22</code> in Cloudflare Pages)</p>
+
+<div class="warn">
+  <strong>Daca build-ul esueaza:</strong> Du-te in Cloudflare → Workers & Pages → critcoffeeshop → Deployments. Vezi log-ul ultimului deploy. Cele mai frecvente cauze: eroare de sintaxa in JSON (virgula lipsa), sau o imagine referita in markdown care nu exista in /media.
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>3. Setup OAuth Worker (INCA DE FACUT)</h2>
+
+<div class="warn">
+  <strong>Fara acest pas, CMS-ul (/admin) nu va functiona cu buton de login.</strong> Pana atunci, Sveltia CMS permite login cu Personal Access Token (PAT) — dar asta nu e user-friendly pentru proprietara.
+</div>
+
+<h3>Pas 1 — Creaza GitHub OAuth App</h3>
+<ol>
+  <li>Du-te pe <a href="https://github.com/settings/applications/new">github.com/settings/applications/new</a></li>
+  <li>Completeaza:
+    <ul>
+      <li><strong>Application name:</strong> <code>critcoffeeshop CMS</code></li>
+      <li><strong>Homepage URL:</strong> <code>https://critcoffeeshop.com</code></li>
+      <li><strong>Authorization callback URL:</strong> <code>https://sveltia-cms-auth.SUBDOMAIN.workers.dev/callback</code> (aflat la Pas 2)</li>
+    </ul>
+  </li>
+  <li>Apasa „Register application"</li>
+  <li>Copiaza <strong>Client ID</strong></li>
+  <li>Apasa „Generate a new client secret", copiaza <strong>Client Secret</strong></li>
+</ol>
+
+<h3>Pas 2 — Deploy Cloudflare Worker</h3>
+<ol>
+  <li>Du-te pe <a href="https://github.com/sveltia/sveltia-cms-auth">github.com/sveltia/sveltia-cms-auth</a></li>
+  <li>Apasa butonul <strong>„Deploy to Cloudflare Workers"</strong></li>
+  <li>Conecteaza contul Cloudflare al proprietarei</li>
+  <li>Dupa deploy, copiaza URL-ul Worker-ului (ex: <code>https://sveltia-cms-auth.xyz.workers.dev</code>)</li>
+  <li>In Cloudflare → Workers → sveltia-cms-auth → Settings → Variables:
+    <ul>
+      <li><code>GITHUB_CLIENT_ID</code> = Client ID de la Pas 1</li>
+      <li><code>GITHUB_CLIENT_SECRET</code> = Client Secret (apasa <strong>Encrypt</strong>)</li>
+      <li><code>ALLOWED_DOMAINS</code> = <code>critcoffeeshop.com</code></li>
+    </ul>
+  </li>
+  <li>Intoarce-te la GitHub OAuth App si actualizeaza <strong>callback URL</strong> cu URL-ul real al Worker-ului + <code>/callback</code></li>
+</ol>
+
+<h3>Pas 3 — Actualizeaza config.yml</h3>
+<p>In <code>public/admin/config.yml</code>, linia <code>base_url</code> — inlocuieste placeholder-ul cu URL-ul Worker-ului:</p>
+<pre><code>backend:
+  name: github
+  repo: Botis0409/critcoffeeshop
+  branch: main
+  base_url: https://sveltia-cms-auth.XYZ.workers.dev</code></pre>
+<p>Commit + push. Asteapta rebuild. Testeaza la <code>critcoffeeshop.com/admin</code>.</p>
+
+<h3>Pas 4 — Cont GitHub pentru proprietara</h3>
+<ol>
+  <li>Fa-i cont GitHub gratuit cu emailul ei</li>
+  <li>Adaug-o ca collaborator: <code>gh repo edit --add-collaborator USERNAME-UL-EI</code> sau din GitHub → Settings → Collaborators</li>
+  <li>Ea accepta invitatia din email</li>
+  <li>Testeaza: deschide <code>critcoffeeshop.com/admin</code> pe telefonul ei → „Login with GitHub" → Authorize → e inauntru</li>
+</ol>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>4. Cum adaug un capitol nou (pagina noua)</h2>
+
+<ol>
+  <li>Creaza un fisier in <code>src/content/chapters/</code>, ex: <code>03-events.md</code></li>
+  <li>Frontmatter-ul trebuie sa aiba <code>title</code>, <code>order: 3</code>, <code>description</code>, <code>photos</code></li>
+  <li>Creaza pagina Astro in <code>src/pages/</code>, ex: <code>events.astro</code> — copiaza <code>program.astro</code> si schimba <code>order === 3</code></li>
+  <li>Adauga link-ul in navigatia din <code>src/layouts/BookLayout.astro</code></li>
+  <li>Commit + push</li>
+</ol>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>5. Actualizare dependente</h2>
+
+<p>O data la cateva luni, e bine sa actualizezi:</p>
+<pre><code>cd /Users/tdr/code/cafenea_crit
+npm update
+npm run build        # verifica ca merge
+git add package*.json
+git commit -m "Update dependencies"
+git push</code></pre>
+
+<p>Daca vrei upgrade major (ex: Astro 7):</p>
+<pre><code>npx @astrojs/upgrade</code></pre>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>6. Troubleshooting</h2>
+
+<table>
+  <tr><th>Problema</th><th>Cauza probabila</th><th>Fix</th></tr>
+  <tr><td>Site-ul nu se actualizeaza dupa Save in CMS</td><td>Build esuat</td><td>Cloudflare → Deployments → vezi log-ul. Fix eroarea, push din nou.</td></tr>
+  <tr><td>CMS-ul nu incarca / eroare la login</td><td>OAuth Worker nu e configurat sau a picat</td><td>Verifica Workers in Cloudflare dashboard. Verifica <code>base_url</code> in config.yml.</td></tr>
+  <tr><td>Pozele nu apar</td><td>Fisierul nu e in <code>public/media/</code> sau path-ul din markdown e gresit</td><td>Verifica ca numele fisierului din <code>photos:</code> corespunde exact cu ce e in media/.</td></tr>
+  <tr><td>Eroare de build: „Chapter X not found"</td><td>Fisierul markdown a fost sters sau <code>order</code> s-a schimbat</td><td>Verifica <code>src/content/chapters/</code> — trebuie sa existe fisiere cu order 1 si 2.</td></tr>
+  <tr><td>DNS nu merge / site inaccesibil</td><td>Nameservers schimbati sau domeniu expirat</td><td>Verifica Namecheap — nameservers = Cloudflare. Verifica Cloudflare → DNS.</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>7. Conturi si acces — tine evidenta</h2>
+
+<table>
+  <tr><th>Serviciu</th><th>Cont</th><th>Ce face</th><th>Cost</th></tr>
+  <tr><td>GitHub</td><td>Botis0409</td><td>Codul sursa + CMS commits</td><td>Gratuit</td></tr>
+  <tr><td>Cloudflare</td><td>Contul proprietarei</td><td>Hosting + CDN + DNS + Worker OAuth</td><td>Gratuit</td></tr>
+  <tr><td>Namecheap</td><td>Contul proprietarei</td><td>Domeniu critcoffeeshop.com</td><td>~10 EUR/an (reinnoire)</td></tr>
+  <tr><td>GitHub (proprietara)</td><td>De creat</td><td>Login in CMS</td><td>Gratuit</td></tr>
+</table>
+
+<div class="warn">
+  <strong>Reinnoire domeniu:</strong> critcoffeeshop.com trebuie reinnoit anual in Namecheap. Seteaza auto-renew sau pune reminder. Daca expira, site-ul dispare.
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>8. Cost recurent</h2>
+
+<p><strong>~10 EUR/an</strong> — doar domeniul. Tot restul (GitHub, Cloudflare Pages, Cloudflare Worker) e gratuit, inclusiv pentru uz comercial.</p>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>9. Backup si recovery</h2>
+
+<ul>
+  <li><strong>Codul si continutul:</strong> totul e in GitHub — git history = backup automat. Orice commit poate fi reversat.</li>
+  <li><strong>Pozele:</strong> sunt in repo, in <code>public/media/</code>. Git le pastreaza.</li>
+  <li><strong>Daca stergi repo-ul din greseala:</strong> GitHub pastreaza repo-urile sterse 90 de zile — contacteaza support.</li>
+  <li><strong>Daca Cloudflare Pages e sters:</strong> recreeaza proiectul, conecteaza acelasi repo, acelasi build config. 2 minute.</li>
+</ul>
+
+<p class="footer">Ghid de mentenanta — critcoffeeshop.com — Iunie 2026</p>
+
+</body>
+</html>
